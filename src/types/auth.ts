@@ -1,14 +1,14 @@
 export interface User {
   id: string;
   email: string;
-  role: 'ADMIN' | 'DOCTOR';
+  role: "Admin" | "Doctor" | "Nurse";
   name?: string;
 }
 
 export interface LoginFormData {
   email: string;
   password: string;
-  role: 'ADMIN' | 'DOCTOR';
+  role: "Admin" | "Doctor" | "Nurse";
   rememberMe: boolean;
 }
 
