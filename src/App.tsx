@@ -5,7 +5,7 @@ function App() {
   return (
     <Routes>
       {/* A public route for the login page */}
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<LoginPage />} />
 
       {/* All other routes are handled by the protected layout */}
       {/* <Route path="/*" element={<ProtectedLayout />} /> */}
