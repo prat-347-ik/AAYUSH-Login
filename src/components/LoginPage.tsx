@@ -16,7 +16,7 @@ const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
-    role: "Admin", // Default role to match your backend ('Admin', 'Doctor')
+    role: "Admin", // Default role
     rememberMe: false,
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -29,32 +29,32 @@ const LoginPage: React.FC = () => {
     setLoginMessage("");
 
     try {
-      // --- Use the API client to make the real login request ---
       const { data } = await api.post<LoginApiResponse>("/auth/login", {
         email: formData.email,
         password: formData.password,
         role: formData.role,
       });
 
-      // --- LOGIN SUCCESS ---
       setLoginMessage(`Welcome ${data.user.name}! Redirecting...`);
-
-      // 1. Save the token to local storage
       localStorage.setItem("token", data.token);
 
-      // 2. Redirect based on the user's role
+      // --- THIS IS THE UPDATED REDIRECTION LOGIC ---
       if (data.user.role === "Admin") {
-        // If Admin dashboard is in the same app, use internal navigation
-        setTimeout(() => navigate("/admin/dashboard"), 1000);
+        const adminAppUrl = "http://localhost:5175"; // Your Admin UI URL
+
+        // Keep the setTimeout for a better user experience
+        setTimeout(() => {
+          // Use the correct path that your Admin App is listening for
+          window.location.href = `${adminAppUrl}/admin/auth/callback?token=${data.token}`;
+        }, 1000);
       } else if (data.user.role === "Doctor") {
-        // If Doctor UI is on a different server, do a full page redirect with the token
-        const doctorAppUrl = "http://localhost:5174"; // IMPORTANT: Use your Doctor UI's actual URL
+        const doctorAppUrl = "http://localhost:5174"; // Your Doctor UI URL
         setTimeout(() => {
           window.location.href = `${doctorAppUrl}/auth/callback?token=${data.token}`;
         }, 1000);
       }
+      // ---------------------------------------------
     } catch (err: any) {
-      // --- LOGIN FAILED ---
       setLoginMessage(
         err.response?.data?.message || "Login failed. Please try again."
       );
@@ -67,7 +67,6 @@ const LoginPage: React.FC = () => {
     <div className="min-h-screen flex">
       {/* Left Side - Medical Image (UI is unchanged) */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-blue-600/20 z-10"></div>
         <img
           src="/doc.jpg"
           alt="Medical professional"
