@@ -40,7 +40,7 @@ const LoginPage: React.FC = () => {
 
       // --- THIS IS THE UPDATED REDIRECTION LOGIC ---
       if (data.user.role === "Admin") {
-        const adminAppUrl = "http://localhost:5175"; // Your Admin UI URL
+        const adminAppUrl = "http://atreya-admin.netlify.app"; // Your Admin UI URL
 
         // Keep the setTimeout for a better user experience
         setTimeout(() => {
@@ -48,7 +48,7 @@ const LoginPage: React.FC = () => {
           window.location.href = `${adminAppUrl}/admin/auth/callback?token=${data.token}`;
         }, 1000);
       } else if (data.user.role === "Doctor") {
-        const doctorAppUrl = "http://localhost:5174"; // Your Doctor UI URL
+        const doctorAppUrl = "http://atreya-medcare.netlify.app"; // Your Doctor UI URL
         setTimeout(() => {
           window.location.href = `${doctorAppUrl}/auth/callback?token=${data.token}`;
         }, 1000);
